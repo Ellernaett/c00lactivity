@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>I'm Sleeping Or Gone</title>
+    <style>
+        @keyframes backgroundFade {
+            0% { background-color: white; color: black; }
+            50% { background-color: rgb(0, 149, 255); color: white; }
+            100% { background-color: white; color: black; }
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            animation: backgroundFade 10s infinite alternate;
+            transition: background-color 1s, color 1s;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        header {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .clock {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .alert {
+            font-size: 30px;
+            color: yellow;
+            display: none;
+        }
+        .direction {
+            font-size: 24px;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+        .arrow {
+            font-size: 60px;
+            font-weight: bold;
+        }
+        .timestamps {
+            margin-top: 50px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .timestamp-entry {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .active {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>HEY!</h1>
+    <header>Please leave this computer and me alone, I'M SLEEPING OR GONE.</header>
+    <div class="clock">Current Time: <span id="current-time"></span></div>
+    <h2 id="message">Wake me up once it's 7:00 AM</h2>
+    <h1>You can know that by the clock</h1>
+    <div id="alert" class="alert">HEY WAKE ME UP NOW!!</div>
+
+    <div id="direction" class="direction">
+        <span id="arrow" class="arrow">→</span>
+        <span id="direction-text">If you're reading this, go to the arrow's direction till you see light</span>
+    </div>
+
+    <div class="timestamps">
+        <h2>TIMESTAMPS</h2>
+        <div id="ts-7am" class="timestamp-entry">7:00 AM - WAKE THEM UP ITS TIME FOR SCHOOL</div>
+        <div id="ts-8am" class="timestamp-entry">8:00 AM - finally, peace.</div>
+        <div id="ts-3pm" class="timestamp-entry">3:00 PM - They should be back soon...</div>
+    </div>
+
+    <script>
+        function updateTime() {
+            let now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            let displayHours = hours % 12 || 12; // Convert to 12-hour format
+            let timeString = displayHours.toString().padStart(2, '0') + ":" + 
+                             minutes.toString().padStart(2, '0') + ":" +
+                             seconds.toString().padStart(2, '0') + " " + ampm;
+
+            document.getElementById("current-time").textContent = timeString;
+
+            let alertBox = document.getElementById("alert");
+            let directionText = document.getElementById("direction-text");
+            let arrow = document.getElementById("arrow");
+
+            // Reset all timestamps to default color
+            document.getElementById("ts-7am").classList.remove("active");
+            document.getElementById("ts-8am").classList.remove("active");
+            document.getElementById("ts-3pm").classList.remove("active");
+
+            if (hours === 7 && ampm === "AM") {
+                alertBox.style.display = "block";
+                directionText.textContent = "WAKE THEM UP ITS TIME FOR SCHOOL";
+                arrow.textContent = "→"; // Forward arrow
+                arrow.style.display = "inline";
+                document.getElementById("ts-7am").classList.add("active");
+            } 
+            else if (hours === 8 && ampm === "AM") {
+                alertBox.style.display = "none";
+                directionText.textContent = "finally, peace.";
+                arrow.style.display = "none"; // Hide arrow
+                document.getElementById("ts-8am").classList.add("active");
+            } 
+            else if (hours === 15 && ampm === "PM") { // 3:00 PM
+                alertBox.style.display = "none";
+                directionText.textContent = "They should be back soon...";
+                arrow.style.display = "none";
+                document.getElementById("ts-3pm").classList.add("active");
+            }
+            else {
+                alertBox.style.display = "none";
+                directionText.textContent = "If you're reading this, go to the arrow's direction till you see light";
+                arrow.textContent = "→"; // Reset to normal
+                arrow.style.display = "inline";
+            }
+        }
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
